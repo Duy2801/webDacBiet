@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Người Đặc Biệt 💌</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Container cho cánh hoa bay -->
+    <div id="petals-container"></div>
+    
+    <!-- Container cho confetti celebration -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Màn hình mở đầu -->
+    <section id="intro-screen" class="screen active">
+        <div class="parallax-layer layer-1"></div>
+        <div class="parallax-layer layer-2"></div>
+        <div class="parallax-layer layer-3"></div>
+        
+        <div class="intro-content">
+            <h1 class="main-title">
+                <span class="typing-text">Gửi Người Đặc Biệt</span>
+                <span class="cursor">|</span>
+            </h1>
+            <div class="hearts-decoration">
+                <span class="heart">💕</span>
+                <span class="heart">💖</span>
+                <span class="heart">💕</span>
+            </div>
+            <button id="open-letter-btn" class="open-btn">
+                Mở Bức Thư 💌
+            </button>
+        </div>
+    </section>
+
+    <!-- Màn hình bức thư -->
+    <section id="letter-screen" class="screen">
+        <div class="letter-container">
+            <!-- Envelope animation -->
+            <div class="envelope" id="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body"></div>
+            </div>
+
+            <!-- Nội dung bức thư -->
+            <div class="letter-paper" id="letter-paper">
+                <div class="letter-header" id="letter-header">
+                    <div class="flower-decoration">🌸</div>
+                    <h2>Gửi Em Yêu Dấu</h2>
+                    <div class="flower-decoration">🌸</div>
+                </div>
+
+                <div class="letter-content" id="letter-content">
+                    <p class="letter-line">Mỗi khoảnh khắc bên em như một giấc mơ tuyệt đẹp,</p>
+                    <p class="letter-line">Một giai điệu khiến trái tim anh hát lên trong niềm vui.</p>
+                    <p class="letter-line">Nụ cười của em xua tan những ngày tăm tối nhất,</p>
+                    <p class="letter-line">Và tiếng cười của em là âm thanh ngọt ngào nhất anh từng được nghe.</p>
+                    <p class="letter-line">Trong một thế giới đầy hỗn loạn, em là bình yên của anh,</p>
+                    <p class="letter-line">Là niềm an ủi, là hạnh phúc, là tất cả của anh.</p>
+                    <p class="letter-line">Cảm ơn em đã là ánh sáng trong cuộc đời anh,</p>
+                    <p class="letter-line">Vì mỗi nụ cười, mỗi cái ôm, mỗi khoảnh khắc quý giá.</p>
+                    <p class="letter-line signature">Với tất cả tình yêu,</p>
+                    <p class="letter-line signature">Mãi mãi là của em ❤️</p>
+                </div>
+
+                <!-- Navigation button inside letter -->
+                <button class="next-btn" id="show-gallery-btn" style="margin-top: 30px;">
+                    Xem Điều Bất Ngờ 🎁
+                </button>
+
+                <!-- Floating hearts around letter -->
+                <div class="floating-hearts">
+                    <span class="floating-heart">💖</span>
+                    <span class="floating-heart">💕</span>
+                    <span class="floating-heart">💗</span>
+                    <span class="floating-heart">💝</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery screen - 3D Carousel -->
+    <section id="gallery-screen" class="screen">
+        <div class="gallery-3d-container">
+            <h3 class="gallery-title">Những Khoảnh Khắc Đẹp 💕</h3>
+            
+            <!-- 3D Carousel -->
+            <div class="carousel-3d" id="carousel-3d">
+                <div class="carousel-item" style="--i: 0">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764554/z7591804483024_f92866ad270f82924fd91ded99fba3c7_fdmvpe.jpg" alt="Memory 1">
+                </div>
+                <div class="carousel-item" style="--i: 1">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764544/z7591810108510_d7d39366f745447b99b125e8854e4187_bgef2m.jpg" alt="Memory 2">
+                </div>
+                <div class="carousel-item" style="--i: 2">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764544/z7591804481635_46395fa955f051467a233c9581c04cfc_va6ots.jpg" alt="Memory 3">
+                </div>
+                <div class="carousel-item" style="--i: 3">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764540/z7591804470170_414d1a2f842a67ce0146f054fe4a3955_rw4hxj.jpg" alt="Memory 4">
+                </div>
+                <div class="carousel-item" style="--i: 4">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764494/z7591804463116_e01e2bd941ce1b26803838dca921cf9b_j8fbmy.jpg" alt="Memory 5">
+                </div>
+                <div class="carousel-item" style="--i: 5">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764473/z7591804461538_897139583338f88eecaa7d44c21d4bb1_uyfdda.jpg" alt="Memory 6">
+                </div>
+                <div class="carousel-item" style="--i: 6">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764466/z7591804446609_78f0230ece6ab8698250e36a4260664d_me2djt.jpg" alt="Memory 7">
+                </div>
+                <div class="carousel-item" style="--i: 7">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764460/z7591804428271_b32ddb736d8e312d0f8950a379742865_ahdjzt.jpg" alt="Memory 8">
+                </div>
+                <div class="carousel-item" style="--i: 8">
+                    <img src="https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764454/z7591804420846_077d6b2cd6e78c189ce1122cbb24e4f6_zzd26b.jpg" alt="Memory 9">
+                </div>
+            </div>
+            
+            <!-- Carousel Controls - Hidden -->
+            <div class="carousel-controls" style="display: none;">
+                <button class="carousel-btn prev-btn" id="prev-btn">❮</button>
+                <button class="carousel-btn next-btn-carousel" id="next-btn">❯</button>
+            </div>
+            
+            <!-- Final Message -->
+            <div class="final-message" id="final-message">
+                <h1 class="final-text">Cảm ơn em đã xuất hiện trong cuộc đời của anh</h1>
+                <div class="heart-burst">
+                    <span>💖</span>
+                    <span>💕</span>
+                    <span>💗</span>
+                    <span>💞</span>
+                    <span>💓</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

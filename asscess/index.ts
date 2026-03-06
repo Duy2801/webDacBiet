@@ -1,0 +1,22 @@
+export const image1 = [
+  {
+    hinh1:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764554/z7591804483024_f92866ad270f82924fd91ded99fba3c7_fdmvpe.jpg",
+    hinh2:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764544/z7591810108510_d7d39366f745447b99b125e8854e4187_bgef2m.jpg",
+    hinh3:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764544/z7591804481635_46395fa955f051467a233c9581c04cfc_va6ots.jpg",
+    hinh4:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764540/z7591804470170_414d1a2f842a67ce0146f054fe4a3955_rw4hxj.jpg",
+    hinh5:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764494/z7591804463116_e01e2bd941ce1b26803838dca921cf9b_j8fbmy.jpg",
+    hinh6:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764473/z7591804461538_897139583338f88eecaa7d44c21d4bb1_uyfdda.jpg",
+    hinh7:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764466/z7591804446609_78f0230ece6ab8698250e36a4260664d_me2djt.jpg",
+    hinh8:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764460/z7591804428271_b32ddb736d8e312d0f8950a379742865_ahdjzt.jpg",
+    hinh9:
+      "https://res.cloudinary.com/dvsuhb9cj/image/upload/v1772764454/z7591804420846_077d6b2cd6e78c189ce1122cbb24e4f6_zzd26b.jpg",
+  },
+];
