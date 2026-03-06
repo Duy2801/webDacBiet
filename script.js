@@ -28,14 +28,15 @@ class ConfettiEffect {
     return {
       x: x,
       y: y,
-      vx: (Math.random() - 0.5) * 10,
-      vy: Math.random() * -15 - 5,
+      vx: (Math.random() - 0.5) * 14,
+      vy: Math.random() * -18 - 6,
       rotation: Math.random() * 360,
-      rotationSpeed: (Math.random() - 0.5) * 10,
-      size: Math.random() * 8 + 4,
+      rotationSpeed: (Math.random() - 0.5) * 14,
+      size: Math.random() * 10 + 5,
       color: this.colors[Math.floor(Math.random() * this.colors.length)],
       life: 1,
-      decay: Math.random() * 0.015 + 0.01,
+      decay: Math.random() * 0.01 + 0.006,
+      shape: Math.random() > 0.5 ? "circle" : "rect",
     };
   }
 
@@ -47,15 +48,19 @@ class ConfettiEffect {
   }
 
   celebrate() {
-    // Multiple bursts across screen
-    const bursts = 5;
+    // Multiple bursts across screen - INTENSE!
+    const bursts = 8;
     for (let i = 0; i < bursts; i++) {
       setTimeout(() => {
         const x = Math.random() * this.canvas.width;
         const y = Math.random() * this.canvas.height * 0.5;
-        this.burst(x, y, 80);
-      }, i * 200);
+        this.burst(x, y, 120);
+      }, i * 150);
     }
+    // Center explosive burst
+    setTimeout(() => {
+      this.burst(this.canvas.width / 2, this.canvas.height / 2, 200);
+    }, 400);
   }
 
   animate() {
@@ -77,7 +82,13 @@ class ConfettiEffect {
       this.ctx.rotate((p.rotation * Math.PI) / 180);
       this.ctx.globalAlpha = p.life;
       this.ctx.fillStyle = p.color;
-      this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      if (p.shape === "circle") {
+        this.ctx.beginPath();
+        this.ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+        this.ctx.fill();
+      } else {
+        this.ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      }
       this.ctx.restore();
 
       return true;
@@ -312,11 +323,9 @@ function setupGalleryTransition() {
 
 function transitionToGallery() {
   switchScreen("letter-screen", "gallery-screen", () => {
-    setTimeout(() => {
-      confetti.celebrate();
-      // Bắt đầu chuỗi animation đặc biệt
-      startGalleryAnimationSequence();
-    }, 500);
+    confetti.celebrate();
+    // Bắt đầu chuỗi animation đặc biệt
+    startGalleryAnimationSequence();
   });
 }
 
@@ -337,8 +346,13 @@ function startGalleryAnimationSequence() {
   items.forEach((item, index) => {
     const angle = (index / items.length) * Math.PI * 2;
 
+    // Responsive scatter radius
+    const isMobile = window.innerWidth <= 480;
+    const isTablet = window.innerWidth <= 768;
+    const scatterRadius = isMobile ? 150 : isTablet ? 220 : 300;
+    const scatterRadius2 = isMobile ? 180 : isTablet ? 280 : 400;
+
     // Scatter positions (phân tán)
-    const scatterRadius = 300;
     item.style.setProperty(
       "--scatter-x",
       `${Math.cos(angle) * scatterRadius}px`,
@@ -351,12 +365,11 @@ function startGalleryAnimationSequence() {
 
     // Sphere positions (hình cầu)
     const sphereAngleY = (index / items.length) * 360;
-    const sphereAngleX = Math.sin(angle * 2) * 60; // Tạo độ cao thấp khác nhau
+    const sphereAngleX = Math.sin(angle * 2) * 60;
     item.style.setProperty("--sphere-angle-y", `${sphereAngleY}deg`);
     item.style.setProperty("--sphere-angle-x", `${sphereAngleX}deg`);
 
     // Scatter 2nd time
-    const scatterRadius2 = 400;
     const angle2 = angle + Math.PI / 4;
     item.style.setProperty(
       "--scatter-x-2",
@@ -372,70 +385,186 @@ function startGalleryAnimationSequence() {
     item.style.setProperty("--final-x", (index - items.length / 2) * 15);
   });
 
-  // Phase 0: Circle Rotate (Xoay vòng tròn carousel) (5s)
-  items.forEach((item) => item.classList.add("phase-circle-rotate"));
+  // Helper: chuyển phase mượt — remove old, add new cùng lúc
+  function setPhase(phaseName) {
+    items.forEach((item) => {
+      // Xóa tất cả phase class
+      item.className = "carousel-item";
+      // Force reflow để animation restart
+      void item.offsetWidth;
+      // Thêm phase mới
+      item.classList.add(phaseName);
+    });
+  }
+
+  // Phase Entry: Ảnh bay vào từ dưới (1s + stagger ~ 2s total)
+  items.forEach((item) => item.classList.add("phase-entry"));
+  const entryTime = 1000 + items.length * 120 + 300; // chờ hết stagger
 
   setTimeout(() => {
-    items.forEach((item) => item.classList.remove("phase-circle-rotate"));
-
-    // Phase 1: Initial Rotate (6s)
-    items.forEach((item) => item.classList.add("phase-rotate"));
+    // Phase 0: Circle Rotate (5s)
+    setPhase("phase-circle-rotate");
 
     setTimeout(() => {
-      items.forEach((item) => item.classList.remove("phase-rotate"));
-
-      // Phase 2: Scatter (4s)
-      items.forEach((item) => item.classList.add("phase-scatter"));
+      // Phase 1: Initial Rotate (6s)
+      setPhase("phase-rotate");
 
       setTimeout(() => {
-        items.forEach((item) => item.classList.remove("phase-scatter"));
-
-        // Phase 3: Gather to Sphere (5s)
-        items.forEach((item) => item.classList.add("phase-gather"));
+        // Phase 2: Scatter (4s)
+        setPhase("phase-scatter");
 
         setTimeout(() => {
-          items.forEach((item) => item.classList.remove("phase-gather"));
-
-          // Phase 4: Sphere Rotate (8s)
-          items.forEach((item) => item.classList.add("phase-sphere-rotate"));
+          // Phase 3: Gather to Sphere (5s)
+          setPhase("phase-gather");
 
           setTimeout(() => {
-            items.forEach((item) =>
-              item.classList.remove("phase-sphere-rotate"),
-            );
-
-            // Phase 5: Scatter Again (4s)
-            items.forEach((item) => item.classList.add("phase-scatter-2"));
+            // Phase 4: Sphere Rotate (8s)
+            setPhase("phase-sphere-rotate");
 
             setTimeout(() => {
-              items.forEach((item) => item.classList.remove("phase-scatter-2"));
-
-              // Phase 6: Slide Down (6s)
-              items.forEach((item) => item.classList.add("phase-slide-down"));
+              // Phase 5: Scatter Again (4s)
+              setPhase("phase-scatter-2");
 
               setTimeout(() => {
-                // Ẩn tất cả ảnh
-                items.forEach((item) => (item.style.display = "none"));
-
-                // Hiện final message
-                finalMessage.classList.add("show");
-
-                // Confetti đặc biệt
-                setTimeout(() => {
-                  confetti.celebrate();
-                  confetti.celebrate();
-                }, 500);
+                // Phase 6: Slide Down (6s)
+                setPhase("phase-slide-down");
 
                 setTimeout(() => {
-                  confetti.celebrate();
-                }, 1500);
-              }, 6000); // Sau slide down
-            }, 4000); // Sau scatter 2
-          }, 8000); // Sau sphere rotate
-        }, 5000); // Sau gather
-      }, 4000); // Sau scatter 1
-    }, 6000); // Sau initial rotate
-  }, 5000); // Sau circle rotate
+                  // Ẩn tất cả ảnh
+                  items.forEach((item) => (item.style.display = "none"));
+
+                  // Hiện final message
+                  finalMessage.classList.add("show");
+
+                  // Confetti đặc biệt
+                  setTimeout(() => {
+                    confetti.celebrate();
+                    confetti.celebrate();
+                  }, 500);
+
+                  setTimeout(() => {
+                    confetti.celebrate();
+                  }, 1500);
+
+                  // Tiếp tục hiệu ứng lời nhắn + hoa nở
+                  setTimeout(() => {
+                    finalMessage.style.transition = "opacity 1s ease";
+                    finalMessage.style.opacity = "0";
+                    setTimeout(() => {
+                      finalMessage.style.display = "none";
+                      startMessageSequence();
+                    }, 1000);
+                  }, 4000);
+                }, 6000);
+              }, 4000);
+            }, 8000);
+          }, 5000);
+        }, 4000);
+      }, 6000);
+    }, 5000);
+  }, entryTime);
+}
+
+// =============================================
+// LỜI NHẮN + VƯỜN HOA (sau gallery animation)
+// =============================================
+function startMessageSequence() {
+  const msgContainer = document.getElementById("personal-messages");
+  const msgItems = document.querySelectorAll(".msg-item");
+
+  // Hiện container lời nhắn
+  msgContainer.classList.add("show");
+
+  // Hiện từng lời nhắn
+  msgItems.forEach((item, index) => {
+    setTimeout(() => {
+      item.classList.add("show");
+      confetti.burst(window.innerWidth / 2, window.innerHeight / 2, 30);
+    }, index * 1500);
+  });
+
+  // Sau khi hiện hết lời nhắn → ẩn lời nhắn → bắt đầu vườn hoa nở
+  const totalMsgTime = msgItems.length * 1500 + 2000;
+  setTimeout(() => {
+    msgContainer.style.transition = "opacity 1s ease";
+    msgContainer.style.opacity = "0";
+    setTimeout(() => {
+      msgContainer.style.display = "none";
+      startFlowerGarden();
+    }, 1000);
+  }, totalMsgTime);
+}
+
+function startFlowerGarden() {
+  const garden = document.getElementById("flower-garden");
+  const flowerEmojis = ["🌸", "🌹", "🌺", "🌻", "🌼", "🌷", "💐", "🏵️", "🌿"];
+  const totalFlowers = 40;
+
+  for (let i = 0; i < totalFlowers; i++) {
+    setTimeout(() => {
+      const flower = document.createElement("div");
+      flower.className = "garden-flower";
+
+      const head = document.createElement("div");
+      head.className = "flower-head";
+      head.textContent =
+        flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
+      head.style.fontSize = Math.random() * 1.5 + 1.5 + "rem";
+      head.style.animationDelay = Math.random() * 2 + "s";
+
+      const stem = document.createElement("div");
+      stem.className = "flower-stem";
+
+      const leafLeft = document.createElement("div");
+      leafLeft.className = "flower-leaf left";
+      leafLeft.textContent = "🍃";
+
+      const leafRight = document.createElement("div");
+      leafRight.className = "flower-leaf right";
+      leafRight.textContent = "🍃";
+
+      flower.appendChild(head);
+      flower.appendChild(stem);
+      flower.appendChild(leafLeft);
+      flower.appendChild(leafRight);
+
+      // Position randomly at bottom area
+      flower.style.left = Math.random() * 90 + 5 + "%";
+      flower.style.bottom = Math.random() * 30 + "%";
+
+      garden.appendChild(flower);
+
+      // Trigger bloom animation
+      requestAnimationFrame(() => {
+        flower.classList.add("bloom");
+      });
+
+      // Confetti burst every 8 flowers
+      if (i % 8 === 0) {
+        confetti.burst(
+          Math.random() * window.innerWidth,
+          Math.random() * window.innerHeight * 0.6,
+          50,
+        );
+      }
+    }, i * 200);
+  }
+
+  // Sau khi tất cả hoa nở → hiện lời kết
+  setTimeout(
+    () => {
+      const finalEnding = document.getElementById("final-ending");
+      if (finalEnding) {
+        finalEnding.classList.add("show");
+
+        // Massive confetti celebration
+        confetti.celebrate();
+        setTimeout(() => confetti.celebrate(), 1000);
+        setTimeout(() => confetti.celebrate(), 2000);
+      }
+    },
+    totalFlowers * 200 + 2000,
+  );
 }
 
 // =============================================
