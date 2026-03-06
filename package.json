@@ -1,0 +1,23 @@
+{
+  "name": "love-letter-website",
+  "version": "1.0.0",
+  "description": "Romantic love letter website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "keywords": [
+    "love",
+    "letter",
+    "romantic"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
